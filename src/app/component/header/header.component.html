@@ -1,0 +1,18 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <a href="/" class="navbar-brand">Netflix</a>
+    <ul class="navbar-menu">
+      <li><a href="/home">Home</a></li>
+      <li><a href="/tv-shows">TV Shows</a></li>
+      <li><a href="/movies">Movies</a></li>
+      <li><a href="/latest">Latest</a></li>
+      <li><a href="/my-list">My List</a></li>
+    </ul>
+    <input
+      type="text"
+      class="search-bar"
+      placeholder="Search movies..."
+      (input)="onSearch($event)"
+    />
+  </div>
+</nav>
