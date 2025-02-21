@@ -1,13 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, FormsModule], //Import FormsModule
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  searchTerm = '';
+  selectedCategory: 'movie' | 'tv' | 'person' = 'movie';
+  @Output() searchClicked = new EventEmitter<string>(); //Output the search term
+  @Output() categoryClicked = new EventEmitter<'movie' | 'tv' | 'person'>();
+
   onSearch(event: Event) {
-    console.log((event.target as HTMLInputElement).value);
+    this.searchTerm = (event.target as HTMLInputElement).value;
+  }
+
+  onSearchClick() {
+    this.searchClicked.emit(this.searchTerm);
+  }
+
+  onCategoryClick(category: 'movie' | 'tv' | 'person') {
+    this.selectedCategory = category;
+    this.categoryClicked.emit(category);
   }
 }

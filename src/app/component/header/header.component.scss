@@ -1,38 +1,164 @@
 .navbar {
   background-color: #141414;
   color: #fff;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
+  /* Reduced padding for smaller screens */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 
-  &-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  /* For search button positioning */
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  /* Optional:  Limit width on large screens */
+  margin: 0 auto;
+  /* Center on large screens */
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  /* Slightly smaller on mobile */
+  font-weight: bold;
+  text-decoration: none;
+  color: #e50914;
+  /* Netflix Red */
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+.navbar-menu li {
+  margin-right: 0.75rem;
+  /* Reduced margin on mobile */
+  font-size: 0.9rem;
+  /* Slightly smaller font */
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  /* Add some padding for touch targets */
+  border-radius: 4px;
+  /* Add rounded corners */
+  transition: background-color 0.2s ease;
+}
+
+.navbar-menu li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Slight highlight on hover */
+}
+
+.navbar-menu a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Style for the selected state */
+.navbar-menu li.selected {
+  background-color: #fff;
+  /* Or any color you want for the selected state */
+  color: #000;
+  /* Change text color for better contrast */
+  font-weight: bold;
+  /*Optional: make the text bold*/
+}
+
+.search-bar {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  /* Reduced margin */
+  font-size: 0.9rem;
+  width: 150px;
+  /* Adjust width as needed */
+  background-color: rgba(255,
+      255,
+      255,
+      0.1);
+  /* Semi-transparent background */
+  color: #fff;
+  /* White text */
+}
+
+.search-bar::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  /* Semi-transparent placeholder */
+}
+
+.search-button {
+  background-color: #e50914;
+  /* Netflix Red */
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: absolute;
+  /* Position absolutely */
+  right: 1rem;
+  /* Adjust from the right edge */
+}
+
+.search-button:hover {
+  background-color: #b20710;
+  /* Darker red on hover */
+}
+
+/* Mobile-Specific Adjustments (Media Query) */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-wrap: wrap;
+    /* Allow items to wrap to the next line */
+    justify-content: center;
+    /* Center items */
+  }
+
+  .navbar-brand {
+    margin-bottom: 0.5rem;
+    /* Add space below brand */
+    text-align: center;
+    /* center the brand */
     width: 100%;
+    /*Make sure the brand take full width*/
   }
 
-  &-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: #fff;
+  .navbar-menu {
+    width: 100%;
+    /*Take the full width for the navbar*/
+    justify-content: center;
+    /* center the content */
+    margin-bottom: 0.5rem;
   }
 
-  &-menu {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .navbar-menu li {
+    margin: 0 0.5rem;
+    /* Reduce margin between menu items */
+  }
 
-    li {
-      margin-right: 1rem;
+  .search-bar {
+    width: 100%;
+    /* Full width search bar */
+    margin-bottom: 0.5rem;
+  }
 
-      a {
-        color: #fff;
-        text-decoration: none;
-      }
-    }
+  .search-button {
+    position: static;
+    /* Reset position */
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    /* Increase padding for better touch */
   }
 }

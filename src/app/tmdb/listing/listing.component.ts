@@ -1,27 +1,60 @@
-import { Component, inject, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+// listing.component.ts
+import {
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core'; //Import Input
 import { TmdbService } from '../../tmdb.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { Media } from '../../models/media.model';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-listing',
   standalone: true,
   templateUrl: './listing.component.html',
   styleUrls: ['./listing.component.scss'],
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinnerModule],
 })
-export class ListingComponent implements OnInit, AfterViewInit {
+export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
   mediaList: Media[] = [];
   currentPage = 1;
   totalPages = 1;
   totalResults = 0;
   isLoading = false;
-  selectedCategory: 'movie' | 'tv' | 'person' = 'movie'; // Default category
+  @Input() selectedCategory: 'movie' | 'tv' | 'person' = 'movie'; // Default category
+  @Input() search = ''; // Add this line to receive the search term
 
   private tmdbService = inject(TmdbService);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+
+  // ✅ Reset list and fetch new data
+  resetAndFetch(): void {
+    this.currentPage = 1;
+    this.mediaList = [];
+    this.fetchMedia();
+    this.search = '';
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedCategory']) {
+      console.log('Category changed:', changes['selectedCategory'].currentValue);
+      this.resetAndFetch();
+    }
+
+    if (changes['search']) {
+      console.log('Search query changed:', changes['search'].currentValue);
+      this.resetAndFetch();
+    }
+  }
 
   ngOnInit(): void {
     this.fetchMedia();
@@ -35,7 +68,8 @@ export class ListingComponent implements OnInit, AfterViewInit {
     if (this.isLoading || this.currentPage > this.totalPages) return;
 
     this.isLoading = true;
-    this.tmdbService.getTrending(this.selectedCategory, this.currentPage).subscribe(
+    this.tmdbService.getTrending(this.selectedCategory, this.currentPage, this.search).subscribe(
+      //Pass the search input
       (response) => {
         this.mediaList.push(...response.results);
         this.totalPages = response.total_pages;

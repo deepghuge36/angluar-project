@@ -1,26 +1,27 @@
-<div class="category-buttons">
-  <button (click)="changeCategory('movie')" [class.active]="selectedCategory === 'movie'">
-    Movies
-  </button>
-  <button (click)="changeCategory('tv')" [class.active]="selectedCategory === 'tv'">
-    TV Shows
-  </button>
-  <button (click)="changeCategory('person')" [class.active]="selectedCategory === 'person'">
-    People
-  </button>
-</div>
-
 <div class="media-container" #scrollContainer>
   <div *ngFor="let item of mediaList" class="media-card">
-    <img
-      *ngIf="item.poster_path || item.profile_path"
-      [src]="'https://image.tmdb.org/t/p/w500' + (item.poster_path || item.profile_path)"
-      [alt]="item.title || item.name"
-    />
-
-    <h3>{{ item.title || item.name }}</h3>
-    <p *ngIf="item.overview">{{ item.overview }}</p>
+    <div class="media-card">
+      <div class="media-card-inner">
+        <div class="media-card-front">
+          <img
+            *ngIf="item.poster_path || item.profile_path"
+            [src]="'https://image.tmdb.org/t/p/w500' + (item.poster_path || item.profile_path)"
+            [alt]="item.title || item.name"
+          />
+          <h3>{{ item.title || item.name }}</h3>
+        </div>
+        <div class="media-card-back">
+          <p *ngIf="item.overview">{{ item.overview }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div *ngIf="isLoading" class="loading">Loading...</div>
+<div
+  *ngIf="isLoading"
+  class="loading"
+  style="display: flex; justify-content: center; align-items: center; height: 100%"
+>
+  <mat-spinner diameter="50"></mat-spinner>
+</div>
