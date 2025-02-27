@@ -32,14 +32,19 @@ export class TmdbService {
     'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZTc4OWZhY2I3NTVlNWYyOGEwYWJlODk3ZDgxODZjYSIsIm5iZiI6MTcwNDAwNDkxMC45NTM5OTk4LCJzdWIiOiI2NTkxMGQyZTY1MWZjZjVmNjg4ZGVjNjkiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.TbeTdOcdPMGM-_brDLI_WH2b-OtrKJV20jHnl-9nylc';
 
   constructor(private http: HttpClient) {}
-
-  getTrending(type: 'movie' | 'tv' | 'person', page = 1, search = ''): Observable<MediaResponse> {
-    const headers = new HttpHeaders({
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
       Authorization: `Bearer ${this.apiKey}`,
       Accept: 'application/json',
       'Cache-Control': 'no-cache',
     });
+  }
 
+  getTrending(
+    type: 'all' | 'movie' | 'tv' | 'person',
+    page = 1,
+    search = ''
+  ): Observable<MediaResponse> {
     let url = '';
 
     if (search) {
@@ -48,6 +53,22 @@ export class TmdbService {
       url = `${this.baseUrl}/trending/${type}/day?language=en-US&page=${page}`;
     }
 
-    return this.http.get<MediaResponse>(url, { headers });
+    return this.http.get<MediaResponse>(url, { headers: this.getHeaders() });
+  }
+
+  getDetail(type: 'movie' | 'tv' | 'person', id: string): Observable<MediaResponse> {
+    let url = '';
+    if (type === 'movie') {
+      url = `${this.baseUrl}/movie/${id}`;
+    }
+
+    if (type === 'tv') {
+      url = `${this.baseUrl}/tv/${id}`;
+    }
+    if (type === 'person') {
+      url = `${this.baseUrl}/person/${id}`;
+    }
+
+    return this.http.get<MediaResponse>(url, { headers: this.getHeaders() });
   }
 }

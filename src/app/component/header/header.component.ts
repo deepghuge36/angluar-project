@@ -1,19 +1,22 @@
+// header.component.ts
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FormsModule], //Import FormsModule
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  constructor(private router: Router) {}
+
   searchTerm = '';
-  selectedCategory: 'movie' | 'tv' | 'person' = 'movie';
-  @Output() searchClicked = new EventEmitter<string>(); //Output the search term
-  @Output() categoryClicked = new EventEmitter<'movie' | 'tv' | 'person'>();
+  selectedCategory: 'all' | 'movie' | 'tv' | 'person' = 'all';
+  @Output() searchClicked = new EventEmitter<string>();
+  @Output() categoryClicked = new EventEmitter<'all' | 'movie' | 'tv' | 'person'>();
 
   onSearch(event: Event) {
     this.searchTerm = (event.target as HTMLInputElement).value;
@@ -23,8 +26,10 @@ export class HeaderComponent {
     this.searchClicked.emit(this.searchTerm);
   }
 
-  onCategoryClick(category: 'movie' | 'tv' | 'person') {
-    this.selectedCategory = category;
-    this.categoryClicked.emit(category);
+  onCategoryClick(category: 'all' | 'movie' | 'tv' | 'person') {
+    if (this.selectedCategory !== category) {
+      this.selectedCategory = category;
+      this.categoryClicked.emit(category);
+    }
   }
 }

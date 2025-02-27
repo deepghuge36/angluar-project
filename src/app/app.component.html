@@ -1,9 +1,5 @@
-<!-- <app-counter></app-counter> -->
-<!-- app.component.html -->
-<app-header
-  (searchClicked)="handleSearch($event)"
-  (categoryClicked)="changeCategory($event)"
-></app-header>
-<app-listing [search]="searchQuery" [selectedCategory]="selectedCategory"></app-listing>
+<app-header></app-header>
+
+<router-outlet></router-outlet>
+
 <app-footer></app-footer>
-<router-outlet />

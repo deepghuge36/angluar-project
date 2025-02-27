@@ -10,4 +10,12 @@ export interface Media {
   popularity?: number;
   original_language?: string;
   profile_path?: string;
+  media_type?: string;
+  known_for_department?: string;
+  birthday?: string;
+  deathday?: string;
+  biography?: string;
+  genres?: { id: number; name: string }[];
+  runtime?: string;
+  backdrop_path?: string;
 }

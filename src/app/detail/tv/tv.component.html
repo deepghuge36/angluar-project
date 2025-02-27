@@ -1,0 +1,27 @@
+<div class="tv-container">
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="isError" class="error">Failed to load TV Show.</div>
+
+  <div *ngIf="tvShow">
+    <div
+      class="background"
+      [style.background-image]="'url(https://image.tmdb.org/t/p/w1280' + tvShow.poster_path + ')'"
+    ></div>
+
+    <div class="tv-details">
+      <div class="tv-content">
+        <div class="poster">
+          <img [src]="'https://image.tmdb.org/t/p/w500' + tvShow.poster_path" [alt]="tvShow.name" />
+        </div>
+
+        <div class="details">
+          <h1>{{ tvShow.name }}</h1>
+          <p><strong>First Air Date:</strong> {{ tvShow.first_air_date }}</p>
+          <p><strong>Overview:</strong> {{ tvShow.overview }}</p>
+          <p class="rating"><strong>Rating:</strong> {{ tvShow.vote_average }}</p>
+          <p><strong>Popularity:</strong> {{ tvShow.popularity }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

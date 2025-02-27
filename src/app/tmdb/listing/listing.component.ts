@@ -1,4 +1,5 @@
-// listing.component.ts
+// ListingComponent
+
 import {
   Component,
   inject,
@@ -6,22 +7,22 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-  Input,
   OnChanges,
   SimpleChanges,
-} from '@angular/core'; //Import Input
+} from '@angular/core';
 import { TmdbService } from '../../tmdb.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { Media } from '../../models/media.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-listing',
   standalone: true,
   templateUrl: './listing.component.html',
   styleUrls: ['./listing.component.scss'],
-  imports: [CommonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatProgressSpinnerModule, RouterLink],
 })
 export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
   mediaList: Media[] = [];
@@ -29,35 +30,36 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
   totalPages = 1;
   totalResults = 0;
   isLoading = false;
-  @Input() selectedCategory: 'movie' | 'tv' | 'person' = 'movie'; // Default category
-  @Input() search = ''; // Add this line to receive the search term
+  search = ''; // Add this line to receive the search term
+  selectedCategory: 'all' | 'movie' | 'tv' | 'person' = 'all'; // Default category
 
   private tmdbService = inject(TmdbService);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
-  // ✅ Reset list and fetch new data
-  resetAndFetch(): void {
-    this.currentPage = 1;
-    this.mediaList = [];
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    // Watch for route changes
+    this.route.paramMap.subscribe((params) => {
+      const category = params.get('category') as 'all' | 'movie' | 'tv' | 'person';
+      if (category && this.selectedCategory !== category) {
+        this.selectedCategory = category;
+        this.resetAndFetch();
+      }
+    });
+
     this.fetchMedia();
-    this.search = '';
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedCategory']) {
-      console.log('Category changed:', changes['selectedCategory'].currentValue);
-      this.resetAndFetch();
-    }
-
-    if (changes['search']) {
+    if (changes['search'] && !changes['search'].firstChange) {
       console.log('Search query changed:', changes['search'].currentValue);
       this.resetAndFetch();
     }
-  }
-
-  ngOnInit(): void {
-    this.fetchMedia();
   }
 
   ngAfterViewInit(): void {
@@ -65,11 +67,11 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   fetchMedia(): void {
+    console.log('Fetching media for:', this.selectedCategory);
     if (this.isLoading || this.currentPage > this.totalPages) return;
 
     this.isLoading = true;
     this.tmdbService.getTrending(this.selectedCategory, this.currentPage, this.search).subscribe(
-      //Pass the search input
       (response) => {
         this.mediaList.push(...response.results);
         this.totalPages = response.total_pages;
@@ -81,6 +83,12 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
         this.isLoading = false;
       }
     );
+  }
+
+  resetAndFetch(): void {
+    this.currentPage = 1;
+    this.mediaList = [];
+    this.fetchMedia();
   }
 
   onScroll(): void {
@@ -102,10 +110,13 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
     this.fetchMedia();
   }
 
-  changeCategory(category: 'movie' | 'tv' | 'person'): void {
-    this.selectedCategory = category;
-    this.currentPage = 1;
-    this.mediaList = []; // Clear previous data
-    this.fetchMedia();
+  changeCategory(category: 'all' | 'movie' | 'tv' | 'person'): void {
+    if (this.selectedCategory !== category) {
+      this.router.navigate(['/listing', category]); // Navigate to the new category
+    }
+  }
+
+  logFunction(item: Media): void {
+    console.log(item);
   }
 }

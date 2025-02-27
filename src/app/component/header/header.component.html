@@ -1,19 +1,33 @@
+<!-- header.component.html -->
+
 <nav class="navbar">
   <div class="navbar-container">
     <span
       tabindex="0"
       class="navbar-brand"
-      (click)="onCategoryClick('movie')"
-      (keydown)="onCategoryClick('movie')"
+      (click)="onCategoryClick('all')"
+      (keydown)="onCategoryClick('all')"
+      [routerLink]="['/']"
       >TMDB</span
     >
     <ul class="navbar-menu">
       <li
         role="menuitem"
         tabindex="0"
+        (click)="onCategoryClick('all')"
+        (keydown)="onCategoryClick('all')"
+        [class.selected]="selectedCategory === 'all'"
+        [routerLink]="['listing', 'all']"
+      >
+        All
+      </li>
+      <li
+        role="menuitem"
+        tabindex="0"
         (click)="onCategoryClick('movie')"
         (keydown)="onCategoryClick('movie')"
         [class.selected]="selectedCategory === 'movie'"
+        [routerLink]="['listing', 'movie']"
       >
         Movies
       </li>
@@ -23,6 +37,7 @@
         (click)="onCategoryClick('tv')"
         (keydown)="onCategoryClick('tv')"
         [class.selected]="selectedCategory === 'tv'"
+        [routerLink]="['listing', 'tv']"
       >
         TV Shows
       </li>
@@ -32,17 +47,18 @@
         (click)="onCategoryClick('person')"
         (keydown)="onCategoryClick('person')"
         [class.selected]="selectedCategory === 'person'"
+        [routerLink]="['listing', 'person']"
       >
-        People
+        Person
       </li>
     </ul>
-    <input
+    <!-- <input
       (input)="onSearch($event)"
       type="search"
       class="search-bar"
       placeholder="Search movies..."
       aria-label="Search movies..."
     />
-    <button class="search-button" (click)="onSearchClick()">Search</button>
+    <button class="search-button" (click)="onSearchClick()">Search</button> -->
   </div>
 </nav>

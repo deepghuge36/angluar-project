@@ -1,0 +1,29 @@
+<div class="movie-container">
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="isError" class="error">Failed to load movie details.</div>
+
+  <div *ngIf="movie">
+    <div
+      class="background"
+      [style.background-image]="'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')'"
+    ></div>
+
+    <div class="movie-details">
+      <div class="movie-content">
+        <div class="poster">
+          <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title" />
+        </div>
+
+        <div class="details">
+          <h1>{{ movie.title }}</h1>
+          <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+          <p><strong>Overview:</strong> {{ movie.overview }}</p>
+          <p><strong>Rating:</strong> ⭐ {{ movie.vote_average }}</p>
+          <p><strong>Popularity:</strong> 🔥 {{ movie.popularity }}</p>
+          <p><strong>Genres:</strong> {{ genres }}</p>
+          <p><strong>Runtime:</strong> ⏳ {{ movie.runtime }} min</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

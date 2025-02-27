@@ -1,155 +1,109 @@
-.category-buttons {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-
-  button {
-    margin: 0 10px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    background-color: #444;
-    color: white;
-    border-radius: 5px;
-
-    &.active {
-      background-color: #ff9800;
-    }
-  }
-}
+$primary-bg: #141414;
+$card-bg: #222;
+$text-color: #fff;
+$hover-scale: 1.05;
+$transition-speed: 0.3s;
 
 .media-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 30px;
   padding: 20px;
+  background-color: $primary-bg;
   overflow-y: auto;
-  height: 95vh
+  height: calc(100vh - 0px);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) $primary-bg;
 }
 
 .media-card {
-  width: 200px;
-  text-align: center;
+  position: relative;
+  background-color: $card-bg;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform $transition-speed ease-in-out;
+  height: 280px;
+
+  &:hover {
+    transform: scale($hover-scale);
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  }
 
   img {
     width: 100%;
-    border-radius: 10px;
+    height: auto;
+    display: block;
+    border-radius: 8px;
   }
 
   h3 {
-    font-size: 16px;
-    margin: 5px 0;
-  }
-
-  p {
+    color: $text-color;
     font-size: 14px;
-    color: gray;
+    text-align: center;
+    margin: 8px 0;
   }
 }
 
 .loading {
-  text-align: center;
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-::-webkit-scrollbar {
-  display: none !important;
-}
-
-.media-card {
-  width: 200px;
-  height: 300px;
-  /* Set a fixed height to accommodate the flipped content */
-  perspective: 1000px;
-  /* Crucial for the 3D flip effect */
-  text-align: center;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.media-card-inner {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-  /* Important for the 3D effect */
-}
-
-.media-card:hover .media-card-inner {
-  transform: rotateY(180deg);
-}
-
-.media-card-front,
-.media-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  /* Hides the back face initially */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  /* Match image border radius */
-  background-color: #333;
-  /* Optional:  Set a background color for the card */
-  color: white;
-  /* Optional: Set text color */
-  box-sizing: border-box;
-  /* Important to include padding and border in the element's total width and height */
-  padding: 10px;
-}
-
-.media-card-front {
-  img {
-    width: 100%;
-    border-radius: 10px;
-    object-fit: cover;
-    /* Ensure the image fills the space */
-    height: 85%;
-  }
-
-  h3 {
-    font-size: 16px;
-    margin: 5px 0;
-  }
-}
-
-.media-card-back {
-  transform: rotateY(180deg);
-  /* Rotates the back face to be initially hidden */
-  overflow: auto;
-  /* Make overview scrollable if it's too long */
-}
-
-.media-card-back p {
-  font-size: 14px;
-  color: lightgray;
-  text-align: left;
-  overflow-x: scroll;
-  line-height: normal;
-  /* Improve readability for long text */
-}
-
-/* Adjustments for specific cases where no image is available */
-.media-card-front:empty {
-  background-color: #444;
-  /* Or another fallback color */
+  background-color: $primary-bg;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
-  font-size: 16px;
-  border-radius: 10px;
 }
 
-.media-card-front:empty::before {
-  content: "No Image Available";
-  /* Or a relevant message */
+/* Scrollbar Styling */
+.media-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.media-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.media-container::-webkit-scrollbar-track {
+  background-color: $primary-bg;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .media-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 30px;
+    padding: 10px;
+  }
+
+  .media-card {
+    height: 300px;
+  }
+
+  .media-card img {
+    border-radius: 6px;
+  }
+
+  .media-card h3 {
+    font-size: 14px;
+    margin: 6px 0;
+  }
+}
+
+/* Small Mobile Screens */
+@media (max-width: 480px) {
+  .media-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 5px;
+    height: calc(100vh - 0px);
+  }
+
+  .media-card {
+    height: 300px;
+  }
+
+  .media-card h3 {
+    font-size: 12px;
+    margin: 4px 0;
+  }
 }
