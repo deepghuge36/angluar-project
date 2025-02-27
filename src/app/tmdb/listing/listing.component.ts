@@ -116,7 +116,10 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  logFunction(item: Media): void {
-    console.log(item);
+  setPlaceholder(event: Event) {
+    console.log('triggered');
+
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'https://placehold.co/300x450?text=No+Image'; // Online placeholder
   }
 }

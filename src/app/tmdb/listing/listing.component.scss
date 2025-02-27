@@ -11,9 +11,10 @@ $transition-speed: 0.3s;
   padding: 20px;
   background-color: $primary-bg;
   overflow-y: auto;
-  height: calc(100vh - 0px);
+  height: calc(100vh - 86px);
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) $primary-bg;
+  margin-top: 46px;
 }
 
 .media-card {
