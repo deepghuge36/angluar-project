@@ -74,42 +74,6 @@ export class ListingComponent implements OnInit, OnDestroy, AfterViewInit {
     this.fetchMedia();
   }
 
-  // handleAuthToken(): void {
-  //   console.log('Checking for authentication token...');
-  //   const urlParams = new URLSearchParams(window.location.search);
-  //   const approvedToken = urlParams.get('request_token');
-
-  //   if (approvedToken && !localStorage.getItem('tmdb_session_id')) {
-  //     console.log('Approved token found:', approvedToken);
-  //     this.tmdbService.createSession(approvedToken).subscribe(
-  //       (res) => {
-  //         console.log('Session created:', res);
-  //         localStorage.setItem('tmdb_session_id', res.session_id);
-  //         this.tmdbService.fetchAccountId({ session_id: res.session_id });
-  //         window.history.replaceState({}, document.title, window.location.pathname);
-  //       },
-  //       (error) => {
-  //         console.error('Error creating session:', error);
-  //       }
-  //     );
-  //   } else {
-  //     this.startTmdbAuthentication();
-  //   }
-  // }
-
-  // startTmdbAuthentication(): void {
-  //   console.log('Starting TMDB authentication...', localStorage.getItem('isApproved'));
-  //   if (!localStorage.getItem('tmdb_session_id')) {
-  //     this.tmdbService.getRequestToken().subscribe((res) => {
-  //       console.log('Request Token:', res.request_token);
-  //       window.location.href = `https://www.themoviedb.org/authenticate/${res.request_token}?redirect_to=${window.location.origin}`;
-  //     });
-  //   } else {
-  //     this.tmdbService.fetchAccountId({ session_id: localStorage.getItem('tmdb_session_id')! });
-  //     console.log('Session ID already exists:', localStorage.getItem('tmdb_session_id'));
-  //   }
-  // }
-
   fetchMedia(): void {
     console.log('Fetching media for:', this.selectedCategory);
     if (this.isLoading || this.currentPage > this.totalPages) return;
