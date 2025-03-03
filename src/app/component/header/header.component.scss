@@ -15,8 +15,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  max-width: 1200px;
+  width: 90%;
+  // max-width: 1200px;
   /* Optional:  Limit width on large screens */
   margin: 0 auto;
   /* Center on large screens */
@@ -187,6 +187,13 @@ body {
   /* Adjust according to navbar height */
 }
 
+.navbar-avatar {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+
 /* Mobile-Specific Adjustments */
 @media (max-width: 768px) {
   .navbar-container {
@@ -221,4 +228,42 @@ body {
     margin-bottom: 0.5rem;
     padding: 0.75rem;
   }
+}
+
+.navbar-avatar-container {
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
+}
+
+.navbar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: transform 0.2s ease-in-out;
+}
+
+.navbar-avatar:hover {
+  transform: scale(1.1);
+}
+
+/* Custom Menu Styling */
+.mat-menu-content {
+  background: rgba(20, 20, 20, 0.9);
+  /* Dark Netflix-style background */
+  color: white;
+  min-width: 200px;
+}
+
+.mat-menu-item {
+  color: white !important;
+  font-weight: bold;
+}
+
+.mat-menu-item:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mat-icon {
+  color: white;
 }

@@ -19,3 +19,13 @@ export interface Media {
   runtime?: string;
   backdrop_path?: string;
 }
+
+export interface AccountModel {
+  id: number;
+  name: string;
+  username: string;
+  avatar: string;
+  isApproved: boolean;
+  sessionId: string;
+  accountId: string;
+}

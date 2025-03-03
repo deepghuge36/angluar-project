@@ -60,5 +60,38 @@
       aria-label="Search movies..."
     />
     <button class="search-button" (click)="onSearchClick()">Search</button> -->
+
+    <!-- If the user is logged in, show the avatar with a dropdown -->
+    <div *ngIf="accountDetails()?.isApproved">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <img
+          [src]="'https://gravatar.com/avatar/' + accountDetails()?.avatar + '?d=identicon'"
+          alt="User Avatar"
+          class="avatar-img"
+        />
+      </button>
+
+      <!-- Dropdown Menu -->
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item disabled>
+          <span>{{ accountDetails()?.username }}</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Log Out</span>
+        </button>
+      </mat-menu>
+    </div>
+
+    <!-- If the user is not logged in, show a login button -->
+    <button
+      *ngIf="!accountDetails()?.isApproved"
+      mat-icon-button
+      color="primary"
+      (click)="login()"
+      title="Login"
+    >
+      <mat-icon>login</mat-icon>
+    </button>
   </div>
 </nav>

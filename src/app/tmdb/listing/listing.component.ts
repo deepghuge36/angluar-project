@@ -1,51 +1,70 @@
-// ListingComponent
-
 import {
   Component,
-  inject,
   OnInit,
+  OnDestroy,
   ViewChild,
   ElementRef,
   AfterViewInit,
-  OnChanges,
-  SimpleChanges,
+  effect,
+  computed,
 } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { TmdbService } from '../../tmdb.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { Media } from '../../models/media.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Media } from '../../models/media.model';
+import { AccountStore } from '../store/tmdb.store';
+import { TmdbAuthService } from '../services/tmdb-auth.service';
 
 @Component({
   selector: 'app-listing',
   standalone: true,
   templateUrl: './listing.component.html',
   styleUrls: ['./listing.component.scss'],
-  imports: [CommonModule, MatProgressSpinnerModule, RouterLink],
+  imports: [CommonModule, MatProgressSpinnerModule, RouterModule],
 })
-export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
+export class ListingComponent implements OnInit, OnDestroy, AfterViewInit {
   mediaList: Media[] = [];
   currentPage = 1;
   totalPages = 1;
   totalResults = 0;
   isLoading = false;
-  search = ''; // Add this line to receive the search term
-  selectedCategory: 'all' | 'movie' | 'tv' | 'person' = 'all'; // Default category
+  search = '';
+  selectedCategory: 'all' | 'movie' | 'tv' | 'person' = 'all';
+  requestToken = '';
+  accountDetails = computed(() => this.accountStore.accountDetails()); // Make it reactive
+  isLogout = computed(() => sessionStorage.getItem('isLogout'));
 
-  private tmdbService = inject(TmdbService);
+  private destroy$ = new Subject<void>();
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private tmdbService: TmdbService, // Inject TmdbService here
+    private accountStore: AccountStore,
+    private tmdbAuthService: TmdbAuthService
+  ) {
+    effect(() => {
+      console.log('Account Details Updated:this.isLogout()', this.isLogout());
+
+      console.log('Account Details Updated:', this.accountDetails());
+      console.log('Account Details Updated: sessionStorage', sessionStorage.getItem('isLogout'));
+    });
+  }
 
   ngOnInit(): void {
-    // Watch for route changes
-    this.route.paramMap.subscribe((params) => {
+    console.log('ngOnInit called');
+
+    // this.tmdbAuthService.handleAuthFlow();
+
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       const category = params.get('category') as 'all' | 'movie' | 'tv' | 'person';
+      console.log('Category changed:', category);
       if (category && this.selectedCategory !== category) {
         this.selectedCategory = category;
         this.resetAndFetch();
@@ -55,16 +74,41 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
     this.fetchMedia();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['search'] && !changes['search'].firstChange) {
-      console.log('Search query changed:', changes['search'].currentValue);
-      this.resetAndFetch();
-    }
-  }
+  // handleAuthToken(): void {
+  //   console.log('Checking for authentication token...');
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const approvedToken = urlParams.get('request_token');
 
-  ngAfterViewInit(): void {
-    this.scrollContainer.nativeElement.addEventListener('scroll', this.onScroll.bind(this));
-  }
+  //   if (approvedToken && !localStorage.getItem('tmdb_session_id')) {
+  //     console.log('Approved token found:', approvedToken);
+  //     this.tmdbService.createSession(approvedToken).subscribe(
+  //       (res) => {
+  //         console.log('Session created:', res);
+  //         localStorage.setItem('tmdb_session_id', res.session_id);
+  //         this.tmdbService.fetchAccountId({ session_id: res.session_id });
+  //         window.history.replaceState({}, document.title, window.location.pathname);
+  //       },
+  //       (error) => {
+  //         console.error('Error creating session:', error);
+  //       }
+  //     );
+  //   } else {
+  //     this.startTmdbAuthentication();
+  //   }
+  // }
+
+  // startTmdbAuthentication(): void {
+  //   console.log('Starting TMDB authentication...', localStorage.getItem('isApproved'));
+  //   if (!localStorage.getItem('tmdb_session_id')) {
+  //     this.tmdbService.getRequestToken().subscribe((res) => {
+  //       console.log('Request Token:', res.request_token);
+  //       window.location.href = `https://www.themoviedb.org/authenticate/${res.request_token}?redirect_to=${window.location.origin}`;
+  //     });
+  //   } else {
+  //     this.tmdbService.fetchAccountId({ session_id: localStorage.getItem('tmdb_session_id')! });
+  //     console.log('Session ID already exists:', localStorage.getItem('tmdb_session_id'));
+  //   }
+  // }
 
   fetchMedia(): void {
     console.log('Fetching media for:', this.selectedCategory);
@@ -73,6 +117,7 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
     this.isLoading = true;
     this.tmdbService.getTrending(this.selectedCategory, this.currentPage, this.search).subscribe(
       (response) => {
+        console.log('Media fetched:', response);
         this.mediaList.push(...response.results);
         this.totalPages = response.total_pages;
         this.totalResults = response.total_results;
@@ -86,9 +131,17 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   resetAndFetch(): void {
+    console.log('Resetting and fetching new data...');
     this.currentPage = 1;
     this.mediaList = [];
     this.fetchMedia();
+  }
+
+  ngAfterViewInit(): void {
+    console.log('After view init, adding scroll event listener');
+    if (this.scrollContainer) {
+      this.scrollContainer.nativeElement.addEventListener('scroll', this.onScroll.bind(this));
+    }
   }
 
   onScroll(): void {
@@ -99,20 +152,9 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
       container.scrollTop + container.clientHeight >= container.scrollHeight - threshold &&
       !this.isLoading
     ) {
+      console.log('Scrolled to bottom, loading more data...');
       this.currentPage++;
       this.fetchMedia();
-    }
-  }
-
-  onPageChange(event: { pageIndex: number }): void {
-    this.currentPage = event.pageIndex + 1;
-    this.mediaList = [];
-    this.fetchMedia();
-  }
-
-  changeCategory(category: 'all' | 'movie' | 'tv' | 'person'): void {
-    if (this.selectedCategory !== category) {
-      this.router.navigate(['/listing', category]); // Navigate to the new category
     }
   }
 
@@ -121,5 +163,11 @@ export class ListingComponent implements OnInit, AfterViewInit, OnChanges {
 
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = 'https://placehold.co/300x450?text=No+Image'; // Online placeholder
+  }
+
+  ngOnDestroy(): void {
+    console.log('Destroying component, cleaning up subscriptions');
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
