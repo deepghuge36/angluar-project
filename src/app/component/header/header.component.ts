@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,10 +37,24 @@ export class HeaderComponent implements OnInit {
     effect(() => {
       console.log('Account Details Updated: in header', this.accountDetails());
       this.cdr.detectChanges();
+      console.log('Current URL:', this.router.url);
     });
   }
 
   ngOnInit() {
+    console.log('Current URL: ngOnInit', this.router.url);
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        console.log('URL After Navigation:', event.url);
+        if (event.url.includes('movie')) {
+          this.selectedCategory = 'movie';
+        } else if (event.url.includes('tv')) {
+          this.selectedCategory = 'tv';
+        } else if (event.url.includes('person')) {
+          this.selectedCategory = 'person';
+        }
+      }
+    });
     // Only check if there's a request_token in the URL
     const urlParams = new URLSearchParams(window.location.search);
     const approvedToken = urlParams.get('request_token');
@@ -63,6 +77,12 @@ export class HeaderComponent implements OnInit {
   onSearchClick() {
     console.log('Search term:', this.searchTerm, this.accountStore.searchTerm());
     this.accountStore.searchTerm.set(this.searchTerm);
+  }
+
+  onClearCheck() {
+    if (!this.searchTerm) {
+      this.onSearchClick();
+    }
   }
 
   onCategoryClick(category: 'all' | 'movie' | 'tv' | 'person') {

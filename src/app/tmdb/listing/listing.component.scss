@@ -109,3 +109,31 @@ $transition-speed: 0.3s;
     margin: 4px 0;
   }
 }
+
+.no-results {
+
+  gap: 30px;
+  padding: 20px;
+  background-color: $primary-bg;
+  overflow-y: auto;
+  height: calc(100vh - 86px);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) $primary-bg;
+  margin-top: 46px;
+  color: $text-color;
+
+}
+
+.hidden {
+
+  display: block;
+
+}
+
+.loading-container {
+  display: flex;
+  background-color: $primary-bg;
+  color: $text-color;
+  justify-content: center;
+  align-items: center;
+}

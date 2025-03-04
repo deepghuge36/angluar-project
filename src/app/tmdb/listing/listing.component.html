@@ -1,30 +1,37 @@
-<div class="media-container" #scrollContainer>
-  <a
-    *ngFor="let item of mediaList"
-    class="media-card"
-    tabindex="0"
-    [routerLink]="['/', item.media_type, item.id]"
-  >
-    <div class="media-card">
-      <div class="media-card-inner">
-        <div class="media-card-front">
-          <!-- *ngIf="item.poster_path || item.profile_path" -->
-          <img
-            [src]="'https://image.tmdb.org/t/p/w500' + (item.poster_path || item.profile_path)"
-            [alt]="item.title || item.name"
-            (error)="setPlaceholder($event)"
-          />
-          <h3>{{ item.title || item.name }}</h3>
+<!-- Loading Spinner -->
+
+<div
+  class="media-container"
+  #scrollContainer
+  [ngClass]="{ hidden: isLoading || mediaList.length === 0 }"
+>
+  <ng-container *ngIf="mediaList.length > 0; else noResults">
+    <a
+      *ngFor="let item of mediaList"
+      class="media-card"
+      tabindex="0"
+      [routerLink]="['/', item.media_type, item.id]"
+    >
+      <div class="media-card">
+        <div class="media-card-inner">
+          <div class="media-card-front">
+            <img
+              [src]="'https://image.tmdb.org/t/p/w500' + (item.poster_path || item.profile_path)"
+              [alt]="item.title || item.name"
+              (error)="setPlaceholder($event)"
+            />
+            <h3>{{ item.title || item.name }}</h3>
+          </div>
         </div>
       </div>
-    </div>
-  </a>
+    </a>
+  </ng-container>
+  <div class="loading-container" *ngIf="isLoading">
+    <p>Loading data, please wait...</p>
+  </div>
 </div>
-
-<!-- <div
-  *ngIf="isLoading"
-  class="loading"
-  style="display: flex; justify-content: center; align-items: center"
->
-  Loading...
-</div> -->
+<ng-template #noResults>
+  <div class="loading-container" *ngIf="searchTerm() !== '' && mediaList.length === 0">
+    No results found for the given query. Please try again with different keywords.
+  </div>
+</ng-template>

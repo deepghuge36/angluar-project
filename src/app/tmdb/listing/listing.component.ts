@@ -85,6 +85,8 @@ export class ListingComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.fetchMedia();
+
+    console.log('print all state', this.mediaList, this.totalResults);
   }
 
   fetchMedia(): void {

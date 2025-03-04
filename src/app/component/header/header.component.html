@@ -63,6 +63,7 @@
         aria-label="Search..."
         [(ngModel)]="searchTerm"
         (keyup.enter)="onSearchClick()"
+        (input)="onClearCheck()"
       />
       <button class="search-button" (click)="onSearchClick()">
         <mat-icon>search</mat-icon>
