@@ -1,16 +1,14 @@
 <!-- Loading Spinner -->
 
-<div
-  class="media-container"
-  #scrollContainer
-  [ngClass]="{ hidden: isLoading || mediaList.length === 0 }"
->
+<div class="media-container" #scrollContainer role="region" aria-live="polite" tabindex="0">
   <ng-container *ngIf="mediaList.length > 0; else noResults">
     <a
       *ngFor="let item of mediaList"
       class="media-card"
       tabindex="0"
       [routerLink]="['/', item.media_type, item.id]"
+      role="link"
+      [attr.aria-label]="item.title || item.name"
     >
       <div class="media-card">
         <div class="media-card-inner">
@@ -26,12 +24,13 @@
       </div>
     </a>
   </ng-container>
-  <div class="loading-container" *ngIf="isLoading">
-    <p>Loading data, please wait...</p>
+  <div class="loading-container" *ngIf="isLoading" role="alert">
+    <mat-spinner class="loading-spinner" color="warn" diameter="50"></mat-spinner>
+    <p>Loading...</p>
   </div>
 </div>
 <ng-template #noResults>
-  <div class="loading-container" *ngIf="searchTerm() !== '' && mediaList.length === 0">
-    No results found for the given query. Please try again with different keywords.
+  <div class="loading-container" *ngIf="searchTerm() !== '' && mediaList.length === 0" role="alert">
+    No results
   </div>
 </ng-template>
