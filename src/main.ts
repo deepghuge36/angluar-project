@@ -10,4 +10,4 @@ bootstrapApplication(AppComponent, { providers: appConfig.providers }).catch((er
   console.error(err)
 );
 
-console.log('husky test');
+console.log('linting checked');

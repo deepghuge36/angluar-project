@@ -1,5 +1,19 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
+# explain what the hook does
+echo "Running lint-staged"
+npx --no-install lint-staged
 
-npm run format && npm run lint 
+# run the formatting
+npx --no-install prettier --write .
+
+# show the files which are changed
+git diff
+
+# the add the all files in git add .
+git add .
+
+# exit with non-zero exit code if any of the linters fail
+exit $?
+
