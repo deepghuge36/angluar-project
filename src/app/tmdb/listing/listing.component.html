@@ -30,7 +30,5 @@
   </div>
 </div>
 <ng-template #noResults>
-  <div class="loading-container" *ngIf="searchTerm() !== '' && mediaList.length === 0" role="alert">
-    No results
-  </div>
+  <div class="loading-container" *ngIf="searchTerm() !== ''" role="alert">No results</div>
 </ng-template>

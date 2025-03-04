@@ -8,6 +8,7 @@
       (click)="onCategoryClick('all')"
       (keydown)="onCategoryClick('all')"
       [routerLink]="['/']"
+      title="Home"
       >TMDB</span
     >
     <ul class="navbar-menu">
@@ -18,6 +19,7 @@
         (keydown)="onCategoryClick('all')"
         [class.selected]="selectedCategory === 'all'"
         [routerLink]="['listing', 'all']"
+        title="Movies, TV Shows, and Person"
       >
         All
       </li>
@@ -28,6 +30,7 @@
         (keydown)="onCategoryClick('movie')"
         [class.selected]="selectedCategory === 'movie'"
         [routerLink]="['listing', 'movie']"
+        title="Movies"
       >
         Movies
       </li>
@@ -38,6 +41,7 @@
         (keydown)="onCategoryClick('tv')"
         [class.selected]="selectedCategory === 'tv'"
         [routerLink]="['listing', 'tv']"
+        title="TV Shows"
       >
         TV Shows
       </li>
@@ -48,6 +52,7 @@
         (keydown)="onCategoryClick('person')"
         [class.selected]="selectedCategory === 'person'"
         [routerLink]="['listing', 'person']"
+        title="Person"
       >
         Person
       </li>
@@ -65,7 +70,7 @@
         (keyup.enter)="onSearchClick()"
         (input)="onClearCheck()"
       />
-      <button class="search-button" (click)="onSearchClick()">
+      <button class="search-button" (click)="onSearchClick()" title="Search">
         <mat-icon>search</mat-icon>
       </button>
     </div>
