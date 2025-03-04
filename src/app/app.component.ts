@@ -13,4 +13,6 @@ console.log('03-03-25');
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'test';
+}

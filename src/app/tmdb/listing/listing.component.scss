@@ -111,7 +111,6 @@ $transition-speed: 0.3s;
 }
 
 .no-results {
-
   gap: 30px;
   padding: 20px;
   background-color: $primary-bg;
@@ -121,13 +120,10 @@ $transition-speed: 0.3s;
   scrollbar-color: rgba(255, 255, 255, 0.2) $primary-bg;
   margin-top: 46px;
   color: $text-color;
-
 }
 
 .hidden {
-
   display: block;
-
 }
 
 .loading-container {

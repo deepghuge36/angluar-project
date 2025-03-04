@@ -9,3 +9,5 @@ injectSpeedInsights();
 bootstrapApplication(AppComponent, { providers: appConfig.providers }).catch((err) =>
   console.error(err)
 );
+
+console.log('husky test');
