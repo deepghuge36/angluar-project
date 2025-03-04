@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TmdbService } from '../../tmdb.service';
+import { TmdbService, VideoResponse } from '../../tmdb.service';
 import { Media } from '../../models/media.model';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tv',
@@ -16,10 +17,13 @@ export class TvComponent implements OnInit {
   tvShow: Media | null = null;
   isLoading = false;
   isError = false;
+  videos: VideoResponse[] = [];
+  selectedVideo: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
-    private tmdbService: TmdbService
+    private tmdbService: TmdbService,
+    public sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -34,6 +38,7 @@ export class TvComponent implements OnInit {
         next: (data) => {
           this.tvShow = { ...data, id: this.tvId ? +this.tvId : 0 };
           console.log('TV Show Details:', this.tvShow);
+          this.getVideos();
           this.isLoading = false;
         },
         error: (err) => {
@@ -42,6 +47,36 @@ export class TvComponent implements OnInit {
           this.isLoading = false;
         },
       });
+    }
+  }
+
+  getVideos() {
+    if (this.tvShow) {
+      this.tmdbService.getVideos('tv', this.tvShow.id.toString()).subscribe({
+        next: (videoResponse) => {
+          console.log('Video Response:', videoResponse);
+
+          this.videos.push(videoResponse);
+        },
+        error: (err) => {
+          console.error('Error fetching videos:', err);
+        },
+      });
+    }
+    return null;
+  }
+
+  selectVideo(videoKey: string) {
+    this.selectedVideo = videoKey;
+  }
+  closeVideo() {
+    this.selectedVideo = null;
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      this.closeVideo();
     }
   }
 }

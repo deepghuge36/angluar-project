@@ -36,6 +36,7 @@ export class ListingComponent implements OnInit, OnDestroy, AfterViewInit {
   requestToken = '';
   accountDetails = computed(() => this.accountStore.accountDetails()); // Make it reactive
   isLogout = computed(() => sessionStorage.getItem('isLogout'));
+  searchTerm = computed(() => this.accountStore.searchTerm());
 
   private destroy$ = new Subject<void>();
 
@@ -54,11 +55,23 @@ export class ListingComponent implements OnInit, OnDestroy, AfterViewInit {
 
       console.log('Account Details Updated:', this.accountDetails());
       console.log('Account Details Updated: sessionStorage', sessionStorage.getItem('isLogout'));
+      // Listen for searchTerm changes
+
+      const term = this.searchTerm();
+      console.log('Search term changed:', term);
+
+      // Only update and fetch if search term actually changed
+      if (term !== this.search) {
+        this.search = term;
+        if (term !== undefined) {
+          this.resetAndFetch();
+        }
+      }
     });
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit called');
+    console.log('ngOnInit called', this.accountStore.searchTerm());
 
     // this.tmdbAuthService.handleAuthFlow();
 

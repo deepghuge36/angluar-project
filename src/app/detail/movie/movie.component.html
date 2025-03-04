@@ -1,29 +1,101 @@
-<div class="movie-container">
-  <div *ngIf="isLoading" class="loading">Loading...</div>
-  <div *ngIf="isError" class="error">Failed to load movie details.</div>
+<div class="movie-container" (document:keydown)="onKeydown($event)" tabindex="0">
+  <ng-container *ngIf="isLoading; else movieContent">
+    <div class="loading">Loading...</div>
+  </ng-container>
 
-  <div *ngIf="movie">
+  <ng-template #movieContent>
+    <ng-container *ngIf="isError; else movieDetails">
+      <div class="error">Failed to load movie details.</div>
+    </ng-container>
+
+    <ng-template #movieDetails>
+      <div
+        class="background"
+        [style.background-image]="
+          'url(https://image.tmdb.org/t/p/w1280' + movie?.backdrop_path + ')'
+        "
+      ></div>
+
+      <section class="movie-details">
+        <span>Details</span>
+        <div class="movie-content">
+          <figure class="poster">
+            <img
+              [src]="'https://image.tmdb.org/t/p/w500' + movie?.poster_path"
+              [alt]="movie?.title"
+            />
+          </figure>
+
+          <div class="details">
+            <h1>{{ movie?.title }}</h1>
+            <p><strong>Release Date:</strong> {{ movie?.release_date }}</p>
+            <p><strong>Overview:</strong> {{ movie?.overview }}</p>
+            <p><strong>Rating:</strong> ⭐ {{ movie?.vote_average }}</p>
+            <p><strong>Popularity:</strong> 🔥 {{ movie?.popularity }}</p>
+            <p><strong>Genres:</strong> {{ genres }}</p>
+            <p><strong>Runtime:</strong> ⏳ {{ movie?.runtime }} min</p>
+          </div>
+        </div>
+      </section>
+    </ng-template>
+
+    <section class="trailers">
+      <h2>Trailers</h2>
+      <ng-container *ngIf="videos.length > 0; else noTrailers">
+        <div class="video-list">
+          <ng-container *ngFor="let videoResponse of videos">
+            <article
+              *ngFor="let video of videoResponse.results"
+              class="video-card"
+              (click)="selectVideo(video.key)"
+              tabindex="0"
+              (keydown.enter)="selectVideo(video.key)"
+              (keydown.space)="selectVideo(video.key)"
+              role="button"
+              [attr.aria-label]="'Play ' + video.name"
+              tabindex="0"
+            >
+              <img
+                [src]="'https://img.youtube.com/vi/' + video.key + '/hqdefault.jpg'"
+                [alt]="video.name"
+              />
+              <p>{{ video.name }}</p>
+            </article>
+          </ng-container>
+        </div>
+      </ng-container>
+      <ng-template #noTrailers>
+        <p>No trailers available.</p>
+      </ng-template>
+    </section>
+
     <div
-      class="background"
-      [style.background-image]="'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')'"
-    ></div>
-
-    <div class="movie-details">
-      <div class="movie-content">
-        <div class="poster">
-          <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title" />
-        </div>
-
-        <div class="details">
-          <h1>{{ movie.title }}</h1>
-          <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
-          <p><strong>Overview:</strong> {{ movie.overview }}</p>
-          <p><strong>Rating:</strong> ⭐ {{ movie.vote_average }}</p>
-          <p><strong>Popularity:</strong> 🔥 {{ movie.popularity }}</p>
-          <p><strong>Genres:</strong> {{ genres }}</p>
-          <p><strong>Runtime:</strong> ⏳ {{ movie.runtime }} min</p>
-        </div>
+      *ngIf="selectedVideo"
+      class="video-overlay"
+      (click)="closeVideo()"
+      tabindex="0"
+      (keydown.enter)="closeVideo()"
+      (keydown.space)="closeVideo()"
+      tabindex="0"
+    >
+      <div
+        class="video-container"
+        (click)="$event.stopPropagation()"
+        tabindex="0"
+        (keydown.enter)="$event.stopPropagation()"
+        (keydown.space)="$event.stopPropagation()"
+        (keydown.escape)="$event.stopPropagation()"
+      >
+        <iframe
+          [src]="
+            sanitizer.bypassSecurityTrustResourceUrl(
+              'https://www.youtube.com/embed/' + selectedVideo + '?autoplay=1'
+            )
+          "
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
       </div>
     </div>
-  </div>
+  </ng-template>
 </div>

@@ -75,6 +75,12 @@
   /*Optional: make the text bold*/
 }
 
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .search-bar {
   padding: 0.5rem;
   border: none;
@@ -103,14 +109,15 @@
   /* Netflix Red */
   color: #fff;
   border: none;
-  padding: 0.5rem 0.75rem;
+  text-align: center;
+  // padding: 0.5rem 0.75rem;
   border-radius: 4px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  position: absolute;
+  // position: absolute;
   /* Position absolutely */
-  right: 1rem;
+  // right: 1rem;
   /* Adjust from the right edge */
 }
 

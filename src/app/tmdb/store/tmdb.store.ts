@@ -7,7 +7,7 @@ import { AccountModel } from '../../models/media.model';
 export class AccountStore {
   // Signal to store account details
   accountDetails = signal<AccountModel | null>(null);
-
+  searchTerm = signal('');
   // Function to set account details (Login)
   setAccountDetails(details: AccountModel) {
     this.accountDetails.set({
@@ -19,6 +19,11 @@ export class AccountStore {
       sessionId: details.sessionId ?? '',
       accountId: details.accountId ?? '',
     });
+  }
+
+  // set the search term
+  setSearchTerm(term: string) {
+    this.searchTerm.set(term);
   }
 
   // Function to clear account details (Logout)

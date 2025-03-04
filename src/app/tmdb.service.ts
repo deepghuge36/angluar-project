@@ -11,6 +11,22 @@ interface MediaResponse {
   total_results: number;
 }
 
+export interface VideoResponse {
+  id: number;
+  results: {
+    iso_639_1: string;
+    iso_3166_1: string;
+    name: string;
+    key: string;
+    site: string;
+    size: number;
+    type: string;
+    official: boolean;
+    published_at: string;
+    id: string;
+  }[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -88,8 +104,15 @@ export class TmdbService {
     let url = '';
 
     if (search) {
-      url = `${this.baseUrl}/search/${type}?language=en-US&page=${page}&query=${encodeURIComponent(search)}`;
+      // If searching in "all" category, use the multi-search endpoint
+      if (type === 'all') {
+        url = `${this.baseUrl}/search/multi?language=en-US&page=${page}&query=${encodeURIComponent(search)}`;
+      } else {
+        // For specific categories, use their dedicated search endpoints
+        url = `${this.baseUrl}/search/${type}?language=en-US&page=${page}&query=${encodeURIComponent(search)}`;
+      }
     } else {
+      // No search term, use trending endpoint
       url = `${this.baseUrl}/trending/${type}/day?language=en-US&page=${page}`;
     }
 
@@ -110,5 +133,15 @@ export class TmdbService {
     }
 
     return this.http.get<MediaResponse>(url, { headers: this.getHeaders() });
+  }
+
+  getVideos(type: 'movie' | 'tv', id: string): Observable<VideoResponse> {
+    let url = ``;
+    if (type === 'movie') {
+      url = `${this.baseUrl}/movie/${id}/videos`;
+    } else if (type === 'tv') {
+      url = `${this.baseUrl}/tv/${id}/videos`;
+    }
+    return this.http.get<VideoResponse>(url, { headers: this.getHeaders() });
   }
 }

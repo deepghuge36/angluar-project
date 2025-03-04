@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AccountStore } from '../../tmdb/store/tmdb.store';
 import { TmdbAuthService } from '../../tmdb/services/tmdb-auth.service';
+import { TmdbService } from '../../tmdb.service';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private accountStore: AccountStore,
     private tmdbAuthService: TmdbAuthService,
+    private tmdbService: TmdbService,
     private cdr: ChangeDetectorRef
   ) {
     effect(() => {
@@ -59,7 +61,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onSearchClick() {
-    this.searchClicked.emit(this.searchTerm);
+    console.log('Search term:', this.searchTerm, this.accountStore.searchTerm());
+    this.accountStore.searchTerm.set(this.searchTerm);
   }
 
   onCategoryClick(category: 'all' | 'movie' | 'tv' | 'person') {

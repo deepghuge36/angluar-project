@@ -23,5 +23,63 @@
         </div>
       </div>
     </div>
+    <section class="trailers">
+      <h2>Trailers</h2>
+      <ng-container *ngIf="videos.length > 0; else noTrailers">
+        <div class="video-list">
+          <ng-container *ngFor="let videoResponse of videos">
+            <article
+              *ngFor="let video of videoResponse.results"
+              class="video-card"
+              (click)="selectVideo(video.key)"
+              tabindex="0"
+              (keydown.enter)="selectVideo(video.key)"
+              (keydown.space)="selectVideo(video.key)"
+              role="button"
+              [attr.aria-label]="'Play ' + video.name"
+              tabindex="0"
+            >
+              <img
+                [src]="'https://img.youtube.com/vi/' + video.key + '/hqdefault.jpg'"
+                [alt]="video.name"
+              />
+              <p>{{ video.name }}</p>
+            </article>
+          </ng-container>
+        </div>
+      </ng-container>
+      <ng-template #noTrailers>
+        <p>No trailers available.</p>
+      </ng-template>
+    </section>
+
+    <div
+      *ngIf="selectedVideo"
+      class="video-overlay"
+      (click)="closeVideo()"
+      tabindex="0"
+      (keydown.enter)="closeVideo()"
+      (keydown.space)="closeVideo()"
+      (keydown.escape)="closeVideo()"
+      tabindex="0"
+    >
+      <div
+        class="video-container"
+        (click)="$event.stopPropagation()"
+        tabindex="0"
+        (keydown.enter)="$event.stopPropagation()"
+        (keydown.space)="$event.stopPropagation()"
+      >
+        <iframe
+          [src]="
+            sanitizer.bypassSecurityTrustResourceUrl(
+              'https://www.youtube.com/embed/' + selectedVideo + '?autoplay=1'
+            )
+          "
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
   </div>
 </div>

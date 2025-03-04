@@ -52,14 +52,22 @@
         Person
       </li>
     </ul>
-    <!-- <input
-      (input)="onSearch($event)"
-      type="search"
-      class="search-bar"
-      placeholder="Search movies..."
-      aria-label="Search movies..."
-    />
-    <button class="search-button" (click)="onSearchClick()">Search</button> -->
+
+    <!-- Search bar and button -->
+    <div class="search-container">
+      <input
+        (input)="onSearch($event)"
+        type="search"
+        class="search-bar"
+        placeholder="Search..."
+        aria-label="Search..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearchClick()"
+      />
+      <button class="search-button" (click)="onSearchClick()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
 
     <!-- If the user is logged in, show the avatar with a dropdown -->
     <div *ngIf="accountDetails()?.isApproved">
