@@ -8,7 +8,6 @@
   align-items: center;
   position: relative;
 
-
   /* For search button positioning */
 }
 
@@ -21,7 +20,6 @@
   /* Optional:  Limit width on large screens */
   margin: 0 auto;
   /* Center on large screens */
-
 }
 
 .navbar-brand {
@@ -90,10 +88,7 @@
   font-size: 0.9rem;
   width: 150px;
   /* Adjust width as needed */
-  background-color: rgba(255,
-      255,
-      255,
-      0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   /* Semi-transparent background */
   color: #fff;
   /* White text */
