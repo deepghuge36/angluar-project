@@ -16,7 +16,8 @@
         role="menuitem"
         tabindex="0"
         (click)="onCategoryClick('all')"
-        (keydown)="onCategoryClick('all')"
+        (keydown.enter)="onCategoryClick('all')"
+        (keyup.enter)="onCategoryClick('all')"
         [class.selected]="selectedCategory === 'all'"
         [routerLink]="['listing', 'all']"
         title="Movies, TV Shows, and Person"
@@ -27,7 +28,8 @@
         role="menuitem"
         tabindex="0"
         (click)="onCategoryClick('movie')"
-        (keydown)="onCategoryClick('movie')"
+        (keydown.enter)="onCategoryClick('movie')"
+        (keyup.enter)="onCategoryClick('movie')"
         [class.selected]="selectedCategory === 'movie'"
         [routerLink]="['listing', 'movie']"
         title="Movies"
@@ -38,7 +40,8 @@
         role="menuitem"
         tabindex="0"
         (click)="onCategoryClick('tv')"
-        (keydown)="onCategoryClick('tv')"
+        (keydown.enter)="onCategoryClick('tv')"
+        (keyup.enter)="onCategoryClick('tv')"
         [class.selected]="selectedCategory === 'tv'"
         [routerLink]="['listing', 'tv']"
         title="TV Shows"
@@ -49,7 +52,8 @@
         role="menuitem"
         tabindex="0"
         (click)="onCategoryClick('person')"
-        (keydown)="onCategoryClick('person')"
+        (keydown.enter)="onCategoryClick('person')"
+        (keyup.enter)="onCategoryClick('person')"
         [class.selected]="selectedCategory === 'person'"
         [routerLink]="['listing', 'person']"
         title="Person"
@@ -73,6 +77,30 @@
       <button class="search-button" (click)="onSearchClick()" title="Search">
         <mat-icon>search</mat-icon>
       </button>
+    </div>
+
+    <!-- Search Results Dropdown -->
+    <div class="search-results" *ngIf="searchResults.length > 0">
+      <ul>
+        <li
+          *ngFor="let item of searchResults"
+          (click)="onSearchResultClick(item)"
+          tabindex="0"
+          (keydown.enter)="onSearchResultClick(item)"
+          (keyup.enter)="onSearchResultClick(item)"
+        >
+          <mat-icon class="search-icon" *ngIf="item.media_type === 'movie'">movie</mat-icon>
+          <mat-icon class="search-icon" *ngIf="item.media_type === 'tv'">tv</mat-icon>
+          <mat-icon class="search-icon" *ngIf="item.media_type === 'person'">person</mat-icon>
+
+          <img
+            [src]="'https://image.tmdb.org/t/p/w200' + item.poster_path"
+            alt="{{ item.title || item.name }}"
+            (error)="setPlaceholder($event)"
+          />
+          <span>{{ item.title || item.name }}</span>
+        </li>
+      </ul>
     </div>
 
     <!-- If the user is logged in, show the avatar with a dropdown -->

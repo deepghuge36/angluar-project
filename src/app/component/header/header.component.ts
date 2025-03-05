@@ -16,6 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { AccountStore } from '../../tmdb/store/tmdb.store';
 import { TmdbAuthService } from '../../tmdb/services/tmdb-auth.service';
 import { TmdbService } from '../../tmdb.service';
+import { debounce } from '../../util/util';
+import { Media } from '../../models/media.model';
 
 @Component({
   selector: 'app-header',
@@ -67,11 +69,25 @@ export class HeaderComponent implements OnInit {
 
   searchTerm = '';
   selectedCategory: 'all' | 'movie' | 'tv' | 'person' = 'all';
+  tempSearch = '';
+  searchResults: Media[] = []; // Store search results
   @Output() searchClicked = new EventEmitter<string>();
   @Output() categoryClicked = new EventEmitter<'all' | 'movie' | 'tv' | 'person'>();
 
+  debouncedSearch = debounce((value: string) => {
+    console.log('Final Search Term:', value);
+    this.searchTerm = value;
+    this.fetchSearchResults();
+  }, 500);
+
   onSearch(event: Event) {
-    this.searchTerm = (event.target as HTMLInputElement).value;
+    const inputElement = event.target as HTMLInputElement;
+    const currentValue = inputElement.value;
+    if (this.tempSearch !== currentValue) {
+      this.tempSearch = currentValue;
+      console.log('Immediate Search Term:', this.tempSearch);
+      this.debouncedSearch(this.tempSearch); // Pass the value to debounce function
+    }
   }
 
   onSearchClick() {
@@ -98,5 +114,39 @@ export class HeaderComponent implements OnInit {
 
   login(): void {
     this.tmdbAuthService.handleAuthFlow();
+  }
+  setPlaceholder(event: Event) {
+    console.log('triggered');
+
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'https://placehold.co/300x450?text=No+Image'; // Online placeholder
+  }
+
+  fetchSearchResults() {
+    if (this.searchTerm.trim()) {
+      this.tmdbService.getTrending(this.selectedCategory, 1, this.searchTerm).subscribe(
+        (response) => {
+          console.log('Search Results:', response);
+          this.searchResults = response.results; // Store search results
+        },
+        (error) => {
+          console.error('Error fetching search results:', error);
+        }
+      );
+    } else {
+      this.searchResults = []; // Clear results if search is empty
+    }
+  }
+  onSearchResultClick(item: Media) {
+    if (item.media_type === 'movie') {
+      this.router.navigate(['/movie', item.id]);
+    } else if (item.media_type === 'tv') {
+      this.router.navigate(['/tv', item.id]);
+    } else if (item.media_type === 'person') {
+      this.router.navigate(['/person', item.id]);
+    }
+
+    this.searchResults = [];
+    this.searchTerm = '';
   }
 }
