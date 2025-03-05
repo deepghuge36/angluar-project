@@ -94,7 +94,12 @@
           <mat-icon class="search-icon" *ngIf="item.media_type === 'person'">person</mat-icon>
 
           <img
-            [src]="'https://image.tmdb.org/t/p/w200' + item.poster_path"
+            [src]="
+              'https://image.tmdb.org/t/p/w1280' +
+              (item.media_type === 'movie' || item.media_type === 'tv'
+                ? item.poster_path
+                : item.profile_path)
+            "
             alt="{{ item.title || item.name }}"
             (error)="setPlaceholder($event)"
           />
