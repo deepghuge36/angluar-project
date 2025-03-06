@@ -1,59 +1,84 @@
-# Test
+# Angular TMDB Project
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.7.
+This is an Angular v19 project built on the TMDB service API. The application allows users to search for movies, TV shows, and people dynamically with features like infinite loading, routing, and state management using Angular Signals and NgRx Store.
 
-## Development server
+## Live Demo
 
-To start a local development server, run:
+[View the live project](https://angluar-project.vercel.app/)
 
-```bash
-ng serve
+## Features
+
+- **Dynamic Search**: Search for movies, TV shows, and people using the TMDB API.
+- **Routing**: Implemented Angular Router for navigation.
+- **Infinite Loading**: Seamless pagination with infinite scroll.
+- **State Management**: Utilized Angular Signals and NgRx Store to share state across listing and detail components.
+- **Deployment on Vercel**: Hosted with Vercel for fast and reliable performance.
+- **Vercel Analytics**: Integrated [Vercel Speed Insights](https://vercel.com/docs/speed-insights) and [Vercel Web Analytics](https://vercel.com/docs/analytics) for performance tracking.
+
+## Tech Stack
+
+- **Angular v19**
+- **Angular Material** (UI Components)
+- **NgRx Store & Signals** (State Management)
+- **TMDB API** (Movie Data Source)
+- **Vercel** (Deployment & Analytics)
+
+## Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/deepghuge36/angluar-project.git
+   cd angluar-project
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Set up environment variables:
+   - Create a `.env` file in the root directory.
+   - Add your TMDB API Key:
+     ```env
+     TMDB_API_KEY=your_tmdb_api_key
+     ```
+4. Run the development server:
+   ```sh
+   npm start
+   ```
+5. Open the project in your browser:
+   ```sh
+   http://localhost:4200
+   ```
+
+## Scripts
+
+- `npm start` – Start the development server.
+- `npm run build` – Build the project.
+- `npm run test` – Run tests.
+- `npm run lint` – Lint the project.
+- `npm run format` – Format code with Prettier.
+
+## Folder Structure
+
+```
+/src
+  ├── app/
+  │   ├── app.module.ts        # Root module
+  │   ├── app.component.ts     # Root component
+  │   ├── app.routing.module.ts # Root routing module
+  │   ├── models/              # Data models
+  │   ├── tmdb/
+  │   │   ├── components/      # Reusable components
+  │   │   ├── pages/           # Page components
+  │   │   ├── services/        # API services
+  │   │   ├── store/           # State management
+  ├── assets/                  # Static assets
+  ├── environments/            # Environment configuration
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Contributions
 
-## Code scaffolding
+Feel free to fork this repository and submit pull requests. Any contributions are welcome!
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## License
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is licensed under the MIT License.
