@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TmdbService } from '../../tmdb.service';
+import { TmdbService } from '../../tmdb/services/tmdb.service';
 import { CommonModule } from '@angular/common';
 import { Media } from '../../models/media.model';
 

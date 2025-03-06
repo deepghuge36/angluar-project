@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Media } from './models/media.model';
-import { AccountStore } from './tmdb/store/tmdb.store';
+import { Media } from '../../models/media.model';
+import { AccountStore } from '../store/tmdb.store';
 
 interface MediaResponse {
   page: number;

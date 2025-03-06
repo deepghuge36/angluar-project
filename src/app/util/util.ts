@@ -5,3 +5,10 @@ export function debounce(func: (value: string) => void, wait: number) {
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
+
+export function setImagePlaceholder(event: Event) {
+  console.log('triggered');
+
+  const imgElement = event.target as HTMLImageElement;
+  imgElement.src = 'https://placehold.co/300x450?text=No+Image'; // Online placeholder
+}

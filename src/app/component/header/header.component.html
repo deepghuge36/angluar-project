@@ -101,7 +101,7 @@
                 : item.profile_path)
             "
             alt="{{ item.title || item.name }}"
-            (error)="setPlaceholder($event)"
+            (error)="setImagePlaceholder($event)"
           />
           <span>{{ item.title || item.name }}</span>
         </li>

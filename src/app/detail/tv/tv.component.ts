@@ -1,9 +1,11 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TmdbService, VideoResponse } from '../../tmdb.service';
+
 import { Media } from '../../models/media.model';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
+import { setImagePlaceholder } from '../../util/util';
+import { TmdbService, VideoResponse } from '../../tmdb/services/tmdb.service';
 
 @Component({
   selector: 'app-tv',
@@ -13,6 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrl: './tv.component.scss',
 })
 export class TvComponent implements OnInit {
+  setImagePlaceholder = setImagePlaceholder;
   tvId: string | null = null;
   tvShow: Media | null = null;
   isLoading = false;

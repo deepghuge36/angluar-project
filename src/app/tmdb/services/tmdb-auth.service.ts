@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TmdbService } from '../../tmdb.service';
+import { TmdbService } from './tmdb.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable({
   providedIn: 'root',

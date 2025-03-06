@@ -10,14 +10,14 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { TmdbService } from '../../tmdb.service';
+import { TmdbService } from '../services/tmdb.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Media } from '../../models/media.model';
 import { AccountStore } from '../store/tmdb.store';
 import { TmdbAuthService } from '../services/tmdb-auth.service';
-
+import { setImagePlaceholder } from '../../util/util';
 @Component({
   selector: 'app-listing',
   standalone: true,
@@ -26,6 +26,7 @@ import { TmdbAuthService } from '../services/tmdb-auth.service';
   imports: [CommonModule, MatProgressSpinnerModule, RouterModule],
 })
 export class ListingComponent implements OnInit, OnDestroy, AfterViewInit {
+  setImagePlaceholder = setImagePlaceholder;
   mediaList: Media[] = [];
   currentPage = 1;
   totalPages = 1;
@@ -135,13 +136,6 @@ export class ListingComponent implements OnInit, OnDestroy, AfterViewInit {
       this.currentPage++;
       this.fetchMedia();
     }
-  }
-
-  setPlaceholder(event: Event) {
-    console.log('triggered');
-
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'https://placehold.co/300x450?text=No+Image'; // Online placeholder
   }
 
   ngOnDestroy(): void {

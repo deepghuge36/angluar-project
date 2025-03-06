@@ -15,8 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AccountStore } from '../../tmdb/store/tmdb.store';
 import { TmdbAuthService } from '../../tmdb/services/tmdb-auth.service';
-import { TmdbService } from '../../tmdb.service';
-import { debounce } from '../../util/util';
+import { TmdbService } from '../../tmdb/services/tmdb.service';
+import { debounce, setImagePlaceholder } from '../../util/util';
 import { Media } from '../../models/media.model';
 
 @Component({
@@ -27,6 +27,7 @@ import { Media } from '../../models/media.model';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  setImagePlaceholder = setImagePlaceholder;
   accountDetails = computed(() => this.accountStore.accountDetails()); // Make it reactive
 
   constructor(
@@ -114,12 +115,6 @@ export class HeaderComponent implements OnInit {
 
   login(): void {
     this.tmdbAuthService.handleAuthFlow();
-  }
-  setPlaceholder(event: Event) {
-    console.log('triggered');
-
-    const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'https://placehold.co/300x450?text=No+Image'; // Online placeholder
   }
 
   fetchSearchResults() {

@@ -1,9 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TmdbService, VideoResponse } from '../../tmdb.service';
+import { TmdbService, VideoResponse } from '../../tmdb/services/tmdb.service';
 import { CommonModule } from '@angular/common';
 import { Media } from '../../models/media.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { setImagePlaceholder } from '../../util/util';
 
 @Component({
   selector: 'app-movie',
@@ -13,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrl: './movie.component.scss',
 })
 export class MovieComponent implements OnInit {
+  setImagePlaceholder = setImagePlaceholder;
   movieId: string | null = null;
   movie: Media | null = null;
   isLoading = false;

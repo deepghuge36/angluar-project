@@ -11,7 +11,11 @@
     <div class="tv-details">
       <div class="tv-content">
         <div class="poster">
-          <img [src]="'https://image.tmdb.org/t/p/w500' + tvShow.poster_path" [alt]="tvShow.name" />
+          <img
+            [src]="'https://image.tmdb.org/t/p/w500' + tvShow.poster_path"
+            [alt]="tvShow.name"
+            (error)="setImagePlaceholder($event)"
+          />
         </div>
 
         <div class="details">
