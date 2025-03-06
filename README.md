@@ -12,6 +12,7 @@ This is an Angular v19 project built on the TMDB service API. The application al
 - **Routing**: Implemented Angular Router for navigation.
 - **Infinite Loading**: Seamless pagination with infinite scroll.
 - **State Management**: Utilized Angular Signals and NgRx Store to share state across listing and detail components.
+- **YouTube Trailers**: Added TV and movie trailers that play using YouTube iframe on the detail page.
 - **Deployment on Vercel**: Hosted with Vercel for fast and reliable performance.
 - **Vercel Analytics**: Integrated [Vercel Speed Insights](https://vercel.com/docs/speed-insights) and [Vercel Web Analytics](https://vercel.com/docs/analytics) for performance tracking.
 - **Husky & Linting**: Configured Husky for Git hooks and set up ESLint & Prettier for code quality enforcement.
@@ -22,6 +23,7 @@ This is an Angular v19 project built on the TMDB service API. The application al
 - **Angular Material** (UI Components)
 - **NgRx Store & Signals** (State Management)
 - **TMDB API** (Movie Data Source)
+- **YouTube Iframe API** (Trailer Playback)
 - **Vercel** (Deployment & Analytics)
 - **Husky & Linting** (Code Quality)
 
