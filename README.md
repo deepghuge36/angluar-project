@@ -14,6 +14,7 @@ This is an Angular v19 project built on the TMDB service API. The application al
 - **State Management**: Utilized Angular Signals and NgRx Store to share state across listing and detail components.
 - **Deployment on Vercel**: Hosted with Vercel for fast and reliable performance.
 - **Vercel Analytics**: Integrated [Vercel Speed Insights](https://vercel.com/docs/speed-insights) and [Vercel Web Analytics](https://vercel.com/docs/analytics) for performance tracking.
+- **Husky & Linting**: Configured Husky for Git hooks and set up ESLint & Prettier for code quality enforcement.
 
 ## Tech Stack
 
@@ -22,6 +23,7 @@ This is an Angular v19 project built on the TMDB service API. The application al
 - **NgRx Store & Signals** (State Management)
 - **TMDB API** (Movie Data Source)
 - **Vercel** (Deployment & Analytics)
+- **Husky & Linting** (Code Quality)
 
 ## Installation
 
@@ -56,6 +58,7 @@ This is an Angular v19 project built on the TMDB service API. The application al
 - `npm run test` – Run tests.
 - `npm run lint` – Lint the project.
 - `npm run format` – Format code with Prettier.
+- `npm run prepare` – Set up Husky Git hooks.
 
 ## Folder Structure
 
