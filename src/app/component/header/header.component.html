@@ -74,7 +74,7 @@
         (keyup.enter)="onSearchClick()"
         (input)="onClearCheck()"
       />
-      <button class="search-button" (click)="onSearchClick()" title="Search">
+      <button class="search-button" (click)="onSearchClick()" title="Search" aria-label="Search">
         <mat-icon>search</mat-icon>
       </button>
     </div>
@@ -110,7 +110,7 @@
 
     <!-- If the user is logged in, show the avatar with a dropdown -->
     <div *ngIf="accountDetails()?.isApproved">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
+      <button mat-icon-button [matMenuTriggerFor]="menu" title="User Menu" aria-label="User Menu">
         <img
           [src]="'https://gravatar.com/avatar/' + accountDetails()?.avatar + '?d=identicon'"
           alt="User Avatar"
@@ -120,10 +120,15 @@
 
       <!-- Dropdown Menu -->
       <mat-menu #menu="matMenu">
-        <button mat-menu-item disabled>
+        <button
+          mat-menu-item
+          disabled
+          title="Username: {{ accountDetails()?.username }}"
+          aria-label="User name"
+        >
           <span>{{ accountDetails()?.username }}</span>
         </button>
-        <button mat-menu-item (click)="logout()">
+        <button mat-menu-item (click)="logout()" title="Log Out" aria-label="Log Out">
           <mat-icon>logout</mat-icon>
           <span>Log Out</span>
         </button>
@@ -137,6 +142,7 @@
       color="primary"
       (click)="login()"
       title="Login"
+      aria-label="Login"
     >
       <mat-icon>login</mat-icon>
     </button>

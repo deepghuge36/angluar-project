@@ -22,7 +22,7 @@ export class TmdbAuthService {
     if (sessionId) {
       console.log('Session ID already exists:', sessionId);
       this.tmdbService.fetchAccountId({ session_id: sessionId });
-      return; // ✅ Exit if session already exists
+      return; //  Exit if session already exists
     }
 
     // Check if we're returning from TMDB with an approved token
@@ -38,19 +38,19 @@ export class TmdbAuthService {
   }
 
   private createTmdbSession(approvedToken: string): void {
-    this.tmdbService.createSession(approvedToken).subscribe(
-      (res) => {
+    this.tmdbService.createSession(approvedToken).subscribe({
+      next: (res) => {
         console.log('Session created:', res);
         localStorage.setItem('tmdb_session_id', res.session_id);
         localStorage.removeItem('tmdb_auth_requested'); // Clear the request flag
         this.tmdbService.fetchAccountId({ session_id: res.session_id });
         window.history.replaceState({}, document.title, window.location.pathname);
       },
-      (error) => {
+      error: (error) => {
         console.error('Error creating session:', error);
         this.showToast('Session creation failed. Try again.');
-      }
-    );
+      },
+    });
   }
 
   private requestTmdbAuthentication(): void {

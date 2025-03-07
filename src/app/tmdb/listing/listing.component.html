@@ -15,7 +15,7 @@
           <div class="media-card-front">
             <img
               [src]="'https://image.tmdb.org/t/p/w500' + (item.poster_path || item.profile_path)"
-              [alt]="item.title || item.name"
+              [alt]="item.title || item.name || 'Banner image'"
               (error)="setImagePlaceholder($event)"
             />
             <h3>{{ item.title || item.name }}</h3>
