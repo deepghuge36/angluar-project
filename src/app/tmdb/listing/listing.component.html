@@ -17,6 +17,9 @@
               [src]="'https://image.tmdb.org/t/p/w500' + (item.poster_path || item.profile_path)"
               [alt]="item.title || item.name || 'Banner image'"
               (error)="setImagePlaceholder($event)"
+              loading="lazy"
+              width="100%"
+              height="auto"
             />
             <h3>{{ item.title || item.name }}</h3>
           </div>

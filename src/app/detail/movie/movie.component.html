@@ -24,6 +24,8 @@
               [alt]="movie?.title"
               (error)="setImagePlaceholder($event)"
               loading="lazy"
+              width="100%"
+              height="auto"
             />
           </figure>
 
@@ -31,10 +33,10 @@
             <h1>{{ movie?.title }}</h1>
             <p><strong>Release Date:</strong> {{ movie?.release_date }}</p>
             <p><strong>Overview:</strong> {{ movie?.overview }}</p>
-            <p><strong>Rating:</strong> ⭐ {{ movie?.vote_average }}</p>
-            <p><strong>Popularity:</strong> 🔥 {{ movie?.popularity }}</p>
+            <p><strong>Rating:</strong> {{ movie?.vote_average }}</p>
+            <p><strong>Popularity:</strong> {{ movie?.popularity }}</p>
             <p><strong>Genres:</strong> {{ genres }}</p>
-            <p><strong>Runtime:</strong> ⏳ {{ movie?.runtime }} min</p>
+            <p><strong>Runtime:</strong> {{ movie?.runtime }} min</p>
           </div>
         </div>
       </section>
@@ -61,6 +63,8 @@
                 [alt]="video.name"
                 (error)="setImagePlaceholder($event)"
                 loading="lazy"
+                width="100%"
+                height="auto"
               />
               <p>{{ video.name }}</p>
             </article>
